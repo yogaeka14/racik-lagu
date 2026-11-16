@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Racik Lagu</title>
+<meta name="theme-color" content="#5B3FD9">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#F4F2FB;--ink:#1D1740;--mut:#5F5985;--card:#fff;--line:#D9D4F0;--acc:#5B3FD9;--on:#fff;--hot:#D12F59;--amb:#A86A00;--soft:#5560D4;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12102A;--ink:#EDEAFB;--mut:#A9A4CE;--card:#1C1940;--line:#352F68;--acc:#9585FF;--on:#14113A;--hot:#FF7A97;--amb:#F2B544;--soft:#8A93FF;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12102A;--ink:#EDEAFB;--mut:#A9A4CE;--card:#1C1940;--line:#352F68;--acc:#9585FF;--on:#14113A;--hot:#FF7A97;--amb:#F2B544;--soft:#8A93FF;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Avenir Next",Avenir,"Segoe UI",system-ui,sans-serif}
+main{max-width:520px;margin:0 auto;padding:22px 18px 40px}
+h1{font-size:2.2rem;letter-spacing:-.035em;margin:.2em 0 .1em;line-height:1.1}
+h2{font-size:1.35rem;letter-spacing:-.02em;margin:0 0 2px;line-height:1.25}
+p{margin:0}
+.sub{color:var(--mut);margin-bottom:1.4rem}
+label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+textarea,select{font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+textarea{width:100%;resize:vertical}
+select{min-height:48px;border-radius:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 16px}
+.chips button{font:inherit;min-height:44px;padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.chips button[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:var(--on)}
+.row{display:flex;gap:12px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+button{cursor:pointer}
+[hidden]{display:none!important}
+#lg,#la{margin-top:14px}
+.pri,.sec{font:inherit;font-weight:700;min-height:48px;padding:12px 22px;border-radius:14px}
+.pri{background:var(--acc);color:var(--on);border:0}
+.sec{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+button:disabled{opacity:.6;cursor:default}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+#out{margin-top:24px;padding:18px;background:var(--card);border:1.5px solid var(--line);border-radius:22px}
+#m{color:var(--mut);font-size:.95rem}
+.ch{font-weight:700;font-size:1.15rem;word-spacing:.35em;margin-top:8px}
+#tl{position:relative;display:flex;gap:3px;height:46px;margin:18px 0}
+#tl b{flex:1;display:grid;place-items:center;min-width:0;overflow:hidden;font-size:.72rem;font-weight:600;color:var(--on);border-radius:8px}
+#tl .intro,#tl .outro{background:var(--soft)}
+#tl .verse{background:var(--acc)}
+#tl .chorus{background:var(--hot)}
+#tl .bridge{background:var(--amb)}
+#ph{position:absolute;top:-5px;bottom:-5px;left:0;width:3px;border-radius:2px;background:var(--ink);z-index:2;pointer-events:none}
+#tm{font-variant-numeric:tabular-nums;color:var(--mut)}
+#note{color:var(--mut);font-size:.9rem;margin-top:10px}
+.foot{color:var(--mut);font-size:.85rem;margin-top:22px}
+.tabs{display:flex;gap:6px;padding:4px;margin-bottom:18px;background:var(--card);border:1.5px solid var(--line);border-radius:16px}
+.tabs button{flex:1;font:inherit;font-weight:600;min-height:44px;border:0;border-radius:12px;background:transparent;color:var(--mut)}
+.tabs button[aria-pressed=true]{background:var(--acc);color:var(--on)}
+.snd{display:flex;align-items:center;gap:12px;margin:0 0 8px}
+.snd button{flex:0 0 138px;font:inherit;text-align:left;min-height:46px;padding:8px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.snd button[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:var(--on);font-weight:600}
+.snd input{flex:1;min-width:0;height:32px;accent-color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+<h1>Racik Lagu</h1>
+<p class="sub">Tulis suasana lagunya, lalu dengarkan hasilnya.</p>
+<label for="p">Deskripsi lagu</label>
+<textarea id="p" rows="3" placeholder="Contoh: pop santai untuk sore hari, agak sedih"></textarea>
+<label id="lg">Gaya musik</label>
+<div class="chips" id="g" role="group" aria-labelledby="lg"></div>
+<label id="la">Suara alam (boleh pilih beberapa)</label>
+<div class="chips" id="a" role="group" aria-labelledby="la"></div>
+<div class="row">
+<div><label for="d">Durasi</label><select id="d"><option value="30">30 detik</option><option value="60">1 menit</option><option value="180" selected>3 menit</option><option value="300">5 menit</option><option value="600">10 menit</option><option value="1800">30 menit</option><option value="3600">1 jam</option><option value="10800">3 jam</option></select></div>
+<button id="go" class="pri" type="button">Buat lagu</button>
+</div>
+<section id="out" hidden>
+<h2 id="t"></h2>
+<p id="m"></p>
+<p id="c" class="ch"></p>
+<div id="tl"><i id="ph"></i></div>
+<div class="row">
+<button id="pl" class="pri" type="button">Putar</button>
+<span id="tm"></span>
+<button id="save" class="sec" type="button">Simpan WAV</button>
+</div>
+<p id="note" aria-live="polite"></p>
+</section>
+<p class="foot">Musik instrumental dan suara alam dibuat langsung di perangkatmu tanpa internet.</p>
+</main>
+<script>
+const $=s=>document.querySelector(s),NN=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const rng=a=>()=>{let t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+const hash=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+const G={
+relax:{n:'Relaksasi',bpm:[56,68],w:'sine',arp:1,nod:1,ld:.45,k:'',s:'',h:'',b:'x...............'},
+pop:{n:'Pop',bpm:[100,118],w:'triangle',arp:1,k:'x.......x.x.....',s:'....x.......x...',h:'x.x.x.x.x.x.x.x.',b:'x...x...x..x....'},
+lofi:{n:'Lo-fi',bpm:[68,84],w:'sine',arp:0,k:'x.....x...x.....',s:'....x.......x...',h:'x.x.x.x.x.x.x.xx',b:'x.......x.......'},
+rock:{n:'Rock',bpm:[122,140],w:'sawtooth',arp:0,k:'x...x...x.x.x...',s:'....x.......x...',h:'x.x.x.x.x.x.x.x.',b:'x.x.x.x.x.x.x.x.'},
+edm:{n:'EDM',bpm:[124,128],w:'sawtooth',arp:1,k:'x...x...x...x...',s:'....x.......x...',h:'..x...x...x...x.',b:'..x...x...x...x.'},
+jazz:{n:'Jazz',bpm:[92,118],w:'triangle',arp:0,sev:1,k:'x.......x.......',s:'....x.......x...',h:'x.xx.xx.x.xx.xx.',b:'x...x...x...x...'},
+dangdut:{n:'Dangdut',bpm:[108,124],w:'triangle',arp:1,k:'x.......x.x.....',s:'....x..x....x..x',h:'................',b:'x..x..x.x..x..x.'},
+none:{n:'Tanpa musik'}
+};
+const KW={relax:/relaks|relax|tidur|meditasi|zen|hening/,lofi:/lo-?fi|santai|chill|belajar|tenang/,rock:/rock|metal|gitar/,edm:/edm|dance|club|techno|house|elektronik/,jazz:/jazz|kafe|cafe/,dangdut:/dangdut|koplo/,pop:/pop/};
+const AM={rain:'Hujan',thunder:'Petir',fall:'Air terjun',brook:'Gemericik air',drop:'Tetesan air',cricket:'Jangkrik',owl:'Burung hantu'};
+const AK={rain:/hujan/,thunder:/petir|guntur/,fall:/air terjun|curug/,brook:/gemericik|gemercik|sungai|aliran air/,drop:/tetes/,cricket:/jangkrik/,owl:/hantu|burung malam/};
+const SQ=['intro','verse','chorus','verse','chorus','bridge','chorus'];
+const LBL={intro:'Intro',verse:'Bait',chorus:'Reff',bridge:'Jembatan',outro:'Penutup'};
+const CF={intro:{},verse:{a:1,b:1,d:1,l:.55},chorus:{a:1,b:1,d:2,l:.8},bridge:{b:1,l:.4},outro:{}};
+const fmt=s=>{s=Math.floor(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;return(h?h+':'+String(m).padStart(2,'0'):m)+':'+String(r).padStart(2,'0')};
+
+function plan(text,gk,dur,seed){
+ const R=rng(seed),g=G[gk],q=text.toLowerCase();
+ if(gk=='none')return{g,text,seed,bpm:0,beat:1,bar:4,root:0,m:()=>0,secs:[],total:dur,name:'',prog:''};
+ const minor=/sedih|galau|rindu|patah|hujan|malam|gelap|sad|dark/.test(q)||R()<.3;
+ let bpm=g.bpm[0]+R()*(g.bpm[1]-g.bpm[0]);
+ if(/santai|pelan|tenang|slow|sedih|galau|rindu/.test(q))bpm*=.85;
+ if(/semangat|cepat|energi|pesta|party|ceria|happy|upbeat/.test(q))bpm*=1.12;
+ bpm=Math.round(bpm);
+ const beat=60/bpm,bar=beat*4,root=Math.floor(R()*12),sc=minor?[0,2,3,5,7,8,10]:[0,2,4,5,7,9,11];
+ const PR=g.sev?[[1,4,0,5]]:minor?[[0,5,2,6],[0,3,6,4],[0,6,5,6],[0,2,5,6]]:[[0,4,5,3],[0,5,3,4],[0,3,4,4],[5,3,0,4]];
+ const pr=PR[Math.floor(R()*PR.length)],m=(i,b)=>b+12*Math.floor(i/7)+sc[(i%7+7)%7];
+ const mk=d=>{const ix=[d,d+2,d+4];if(g.sev)ix.push(d+6);const t=ix.map(i=>m(i,48+root)),th=t[1]-t[0],fi=t[2]-t[0];
+  return{d,t,name:NN[(root+sc[d])%12]+(th==3?(fi==6?'dim':'m'):'')+(g.sev?'7':'')}};
+ const n=Math.max(3,Math.round(dur/(bar*4))),secs=[],mel={};
+ for(let i=0;i<n;i++){const type=i==n-1?'outro':SQ[i%SQ.length];const p=type=='bridge'?[...pr.slice(2),...pr.slice(0,2)]:pr;secs.push({type,ch:p.map(d=>mk(d))})}
+ secs.forEach(s=>{const c=CF[s.type];if(!c.l)return;
+  if(!mel[s.type]){const hi=s.type=='chorus';let ix=hi?7:4;
+   mel[s.type]=s.ch.map(ch=>{const o=[];for(let k=0;k<8;k++){let v=null;
+    if(k==0||R()<c.l*(g.ld||1)){
+     if(k%4==0){const cd=[];for(const a of[0,7])for(const e of[0,2,4])cd.push(ch.d+e+a);cd.sort((x,y)=>Math.abs(x-ix)-Math.abs(y-ix));ix=cd[R()<.7?0:1]}
+     else ix+=[-2,-1,-1,1,1,2][Math.floor(R()*6)];
+     ix=Math.max(hi?3:1,Math.min(hi?12:9,ix));v=ix}
+    o.push(v)}return o})}
+  s.mel=mel[s.type]});
+ return{g,text,seed,bpm,beat,bar,root,m,secs,total:n*4*bar,name:NN[root]+(minor?' minor':' mayor'),prog:pr.map(d=>mk(d).name).join('  ')}
+}
+
+async function render(P){
+ const SR=24000,oc=new OfflineAudioContext(1,Math.ceil((P.total+1)*SR),SR),g=P.g,st=P.beat/4;
+ const mg=oc.createGain(),cp=oc.createDynamicsCompressor(),bus=oc.createBiquadFilter(),ld=oc.createGain(),dl=oc.createDelay(),fb=oc.createGain(),ds=oc.createGain();
+ mg.gain.value=.9;cp.threshold.value=-18;cp.ratio.value=3;
+ mg.connect(cp);cp.connect(oc.destination);
+ bus.type='lowpass';bus.frequency.value=g.w=='sawtooth'?1800:5000;bus.connect(mg);
+ ld.connect(bus);ld.connect(ds);ds.gain.value=.3;ds.connect(dl);dl.delayTime.value=Math.min(.9,P.beat*.75);fb.gain.value=.35;dl.connect(fb);fb.connect(dl);dl.connect(mg);
+ const nb=oc.createBuffer(1,SR*8,SR),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;
+ const f=x=>440*2**((x-69)/12);
+ const tone=(t,x,d,w,v,dst,sus,at)=>{const o=oc.createOscillator(),a=oc.createGain();o.type=w;o.frequency.value=f(x);
+  a.gain.setValueAtTime(0,t);a.gain.linearRampToValueAtTime(v,t+(at||.03));
+  if(sus){a.gain.setValueAtTime(v,t+d-sus);a.gain.linearRampToValueAtTime(0,t+d)}else a.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(a);a.connect(dst);o.start(t);o.stop(t+d+.02)};
+ const nz=(t,d,hp,v)=>{const s=oc.createBufferSource(),h=oc.createBiquadFilter(),a=oc.createGain();s.buffer=nb;h.type='highpass';h.frequency.value=hp;
+  a.gain.setValueAtTime(v,t);a.gain.exponentialRampToValueAtTime(.001,t+d);s.connect(h);h.connect(a);a.connect(mg);s.start(t);s.stop(t+d)};
+ const kick=t=>{const o=oc.createOscillator(),a=oc.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(45,t+.12);
+  a.gain.setValueAtTime(.8,t);a.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(a);a.connect(mg);o.start(t);o.stop(t+.26)};
+ let bi=0;
+ for(const s of P.secs){const c=CF[s.type];
+  s.ch.forEach((ch,ci)=>{const t0=bi++*P.bar,arp=c.a&&g.arp;
+   ch.t.forEach(x=>tone(t0,x,P.bar+(g.nod?1.2:0),g.w,arp?0.03:0.055,bus,g.nod?1.2:.15,g.nod?1.2:.03));
+   if(arp)for(let k=0;k<8;k++)tone(t0+k*P.beat/2,ch.t[[0,1,2,1,0,1,2,1][k]%ch.t.length]+12,P.beat*.9,g.w,.07,bus);
+   if(c.b)for(let k=0;k<16;k++)if(g.b[k]=='x')tone(t0+k*st,P.m(ch.d,36+P.root)+(k>11&&ci%2?7:0),st*(g.nod?12:1.8),'triangle',g.nod?0.12:0.2,mg);
+   if(c.d&&!g.nod)for(let k=0;k<16;k++){const t=t0+k*st;
+    if(g.k[k]=='x')kick(t);
+    if(c.d>1&&g.s[k]=='x'){nz(t,.14,1500,.35);tone(t,54,.1,'triangle',.25,mg)}
+    if(g.h[k]=='x')nz(t,.04,7000,k%4?.07:.12)}
+   if(s.mel)s.mel[ci].forEach((x,k)=>{if(x!=null)tone(t0+k*P.beat/2,P.m(x,57+P.root),P.beat*(g.nod?0.9:0.45),g.w=='sine'&&!g.nod?'triangle':g.w,g.nod?0.08:0.13,ld)})
+  })}
+ const L=P.total,A=P.amb||[],R=rng(P.seed+7),amb=oc.createGain(),ech=oc.createGain(),ed=oc.createDelay(),ef=oc.createGain();
+ amb.gain.value=P.secs.length?0.7:1.2;amb.connect(mg);ech.connect(ed);ed.delayTime.value=.3;ef.gain.value=.4;ed.connect(ef);ef.connect(ed);ed.connect(amb);
+ const bed=(ty,fr,q,v,off)=>{const s=oc.createBufferSource(),fl=oc.createBiquadFilter(),a=oc.createGain();s.buffer=nb;s.loop=true;fl.type=ty;fl.frequency.value=fr;fl.Q.value=q;a.gain.value=v;s.connect(fl);fl.connect(a);a.connect(amb);s.start(0,off);return fl.frequency};
+ const wob=(p,l)=>l.forEach(([r,d])=>{const o=oc.createOscillator(),a=oc.createGain();o.frequency.value=r;a.gain.value=d;o.connect(a);a.connect(p);o.start(0)});
+ const ev=(a,b,fn)=>{for(let t=a+R()*b;t<L-1;t+=a+R()*b)fn(t)};
+ const has=k=>A.includes(k);
+ if(has('rain')){bed('bandpass',3800,.35,.55,0);bed('lowpass',600,.5,.2,2)}
+ if(has('fall')){bed('lowpass',2500,.5,.55,1);bed('bandpass',900,.3,.6,3);bed('lowpass',250,.5,2.2,5)}
+ if(has('brook')){wob(bed('bandpass',1500,6,3,4),[[7.3,450],[11.1,300],[17.9,200]]);wob(bed('bandpass',2600,7,3,6),[[9.1,500],[13.7,350]])}
+ if(has('thunder'))ev(10,20,t=>{const v=1.2+R(),s=oc.createBufferSource(),fl=oc.createBiquadFilter(),a=oc.createGain();s.buffer=nb;s.loop=true;fl.type='lowpass';fl.frequency.setValueAtTime(1800,t);fl.frequency.exponentialRampToValueAtTime(70,t+5);a.gain.setValueAtTime(0,t);let x=t;for(let k=0;k<4;k++){a.gain.linearRampToValueAtTime(v*(1-k*.22),x+.15);x+=.5+R()*.9;a.gain.linearRampToValueAtTime(v*.25,x)}a.gain.exponentialRampToValueAtTime(.001,t+6);s.connect(fl);fl.connect(a);a.connect(amb);s.start(t,R()*5);s.stop(t+6.1)});
+ if(has('drop'))ev(.8,2.4,t=>{const fq=500+R()*700,o=oc.createOscillator(),a=oc.createGain();o.frequency.setValueAtTime(fq,t);o.frequency.exponentialRampToValueAtTime(fq*2.2,t+.07);a.gain.setValueAtTime(0,t);a.gain.linearRampToValueAtTime(.2+R()*.2,t+.006);a.gain.exponentialRampToValueAtTime(.001,t+.22);o.connect(a);a.connect(amb);a.connect(ech);o.start(t);o.stop(t+.25)});
+ if(has('cricket'))[[4500,27,2.3],[4750,31,2.9],[4300,24,1.9]].forEach(([fc,pr,cr])=>{const c=oc.createOscillator(),g1=oc.createGain(),g2=oc.createGain(),o=oc.createGain();c.frequency.value=fc;g1.gain.value=.5;g2.gain.value=.5;o.gain.value=.07;wob(g1.gain,[[pr,.5]]);wob(g2.gain,[[cr,.5]]);c.connect(g1);g1.connect(g2);g2.connect(o);o.connect(amb);c.start(0)});
+ if(has('owl'))ev(14,26,t=>{const hoot=(u,fq,d,v)=>{const o=oc.createOscillator(),h=oc.createOscillator(),a=oc.createGain(),b=oc.createGain();o.frequency.setValueAtTime(fq*1.06,u);o.frequency.exponentialRampToValueAtTime(fq*.93,u+d);h.frequency.setValueAtTime(fq*2.1,u);h.frequency.exponentialRampToValueAtTime(fq*1.86,u+d);b.gain.value=.25;a.gain.setValueAtTime(0,u);a.gain.linearRampToValueAtTime(v,u+.12);a.gain.linearRampToValueAtTime(v*.7,u+d*.7);a.gain.linearRampToValueAtTime(0,u+d);o.connect(a);h.connect(b);b.connect(a);a.connect(amb);a.connect(ech);o.start(u);h.start(u);o.stop(u+d+.02);h.stop(u+d+.02)};
+  [0,5+R()*3].forEach((dt,i)=>{if(i&&R()<.4)return;const fq=(i?300:400)+R()*60;[[0,.5],[.8,.3],[1.2,.3],[1.8,1.1]].forEach(([w,d])=>hoot(t+dt+w,fq,d,i?0.1:0.18))})});
+ const buf=await oc.startRendering(),d=buf.getChannelData(0);let pk=0;
+ for(let i=0;i<d.length;i++)pk=Math.max(pk,Math.abs(d[i]));
+ if(pk>0)for(let i=0;i<d.length;i++)d[i]*=.92/pk;
+ return buf
+}
+
+const gs=new Set(),ns=new Set();
+let P,n=0,ac,src,rec,chunks=[],blob,ext,t0,raf,fin;
+const chips=(el,o,multi,st)=>Object.entries(o).forEach(([k,v])=>{const b=document.createElement('button');b.type='button';b.dataset.k=k;b.textContent=typeof v=='string'?v:v.n;b.setAttribute('aria-pressed','false');
+ b.onclick=()=>{if(multi){if(st.has(k))st.delete(k);else st.add(k)}else{const on=st.has(k);st.clear();if(!on)st.add(k)}
+  [...el.children].forEach(x=>x.setAttribute('aria-pressed',st.has(x.dataset.k)))};el.append(b)});
+chips($('#g'),G,0,gs);chips($('#a'),AM,1,ns);
+
+function stop(){
+ cancelAnimationFrame(raf);fin=false;
+ if(src){src.onended=null;try{src.stop()}catch(e){}src=null}
+ if(rec&&rec.state!='inactive'){try{rec.stop()}catch(e){}}
+ rec=null;$('#pl').textContent='Putar';
+ const ph=$('#ph');if(ph)ph.style.left='0%';
+ if(P)$('#tm').textContent='0:00 / '+fmt(P.play)
+}
+function play(){
+ stop();ac=ac||new AudioContext();ac.resume();
+ src=ac.createBufferSource();src.buffer=P.buf;const pg=ac.createGain();src.connect(pg);pg.connect(ac.destination);if(P.play>P.total+1){src.loop=true;src.loopEnd=P.total}
+ 
+ src.onended=()=>{fin=true;cancelAnimationFrame(raf);src=null;if(rec&&rec.state!='inactive')rec.stop();
+  $('#pl').textContent='Putar lagi';$('#ph').style.left='0%';$('#tm').textContent='0:00 / '+fmt(P.play)};
+ fin=false;t0=ac.currentTime+.05;pg.gain.setValueAtTime(1,t0+Math.max(0,P.play-5));pg.gain.linearRampToValueAtTime(0,t0+P.play);src.start(t0);src.stop(t0+P.play);$('#pl').textContent='Berhenti';
+ const tick=()=>{const e=Math.min(ac.currentTime-t0,P.play);
+  if(e>=0){$('#ph').style.left=(e%P.total/P.total*100)+'%';$('#tm').textContent=fmt(e)+' / '+fmt(P.play)}
+  raf=requestAnimationFrame(tick)};
+ tick()
+}
+$('#pl').onclick=()=>{src?stop():play()};
+
+function show(){
+ const w=P.text.split(/\s+/).slice(0,5).join(' ');
+ $('#t').textContent=w.charAt(0).toUpperCase()+w.slice(1);
+ $('#m').textContent=(P.secs.length?P.g.n+', '+P.bpm+' BPM, nada dasar '+P.name:'Suara alam saja')+(P.amb.length?'. Suara: '+P.amb.map(k=>AM[k].toLowerCase()).join(', '):'');
+ $('#c').textContent=P.prog;
+ const tl=$('#tl');tl.innerHTML='<i id="ph"></i>';
+ P.secs.forEach(s=>{const e=document.createElement('b');e.className=s.type;e.textContent=LBL[s.type];tl.append(e)});
+ $('#note').textContent=P.play>P.total+1?'Lagu diulang sampai durasi tercapai. Simpan WAV berisi satu putaran.':'';tl.hidden=!P.secs.length;$('#pl').textContent='Putar';$('#tm').textContent='0:00 / '+fmt(P.play);
+ $('#out').hidden=false;$('#out').scrollIntoView({behavior:'smooth'})
+}
+
+$('#go').onclick=async()=>{
+ const btn=$('#go');stop();btn.disabled=true;btn.textContent='Membuat lagu…';
+ await new Promise(r=>setTimeout(r,40));
+ try{
+  const text=$('#p').value.trim(),q=text.toLowerCase(),dur=+$('#d').value;
+  const am=[...new Set([...ns,...Object.keys(AK).filter(k=>AK[k].test(q))])];
+  const gk=[...gs][0]||Object.keys(KW).find(k=>KW[k].test(q))||(am.length?'relax':'pop');
+  if(gk=='none'&&!am.length)am.push('rain');
+  const seed=hash(text+gk)+n++*977;
+  P=plan(text||(am.length?'Suara alam':'Lagu '+G[gk].n),gk,Math.min(dur,240),seed);
+  P.amb=am;P.play=dur>240?dur:P.total;
+  P.buf=await render(P);show()
+ }catch(e){$('#out').hidden=false;$('#note').textContent='Gagal membuat lagu. Coba lagi.'}
+ btn.disabled=false;btn.textContent='Buat lagu'
+};
+
+const wav=()=>{const b=P.buf,d=b.getChannelData(0),sr=b.sampleRate,n=Math.floor(P.total*sr),fd=P.play<=P.total+1?4*sr:0,o=new DataView(new ArrayBuffer(44+n*2)),w=(i,t)=>{for(let k=0;k<t.length;k++)o.setUint8(i+k,t.charCodeAt(k))};
+ w(0,'RIFF');o.setUint32(4,36+n*2,true);w(8,'WAVEfmt ');o.setUint32(16,16,true);o.setUint16(20,1,true);o.setUint16(22,1,true);o.setUint32(24,sr,true);o.setUint32(28,sr*2,true);o.setUint16(32,2,true);o.setUint16(34,16,true);w(36,'data');o.setUint32(40,n*2,true);
+ for(let i=0;i<n;i++){const g=fd&&i>n-fd?(n-i)/fd:1;o.setInt16(44+i*2,Math.max(-1,Math.min(1,d[i]*g))*32767,true)}
+ return new Blob([o],{type:'audio/wav'})};
+$('#save').onclick=()=>{const u=URL.createObjectURL(wav()),a=document.createElement('a');a.href=u;a.download=(P.text.replace(/[^\w ]+/g,'').trim().replace(/\s+/g,'-').slice(0,40)||'lagu')+'.wav';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000)};
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
